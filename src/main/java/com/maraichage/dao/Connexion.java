@@ -11,6 +11,21 @@ import java.sql.SQLException;
  */
 public final class Connexion {
 
+    /*
+     * Enregistrement explicite du pilote PostgreSQL auprès de DriverManager.
+     * Indispensable dans un conteneur de servlets (Tomcat) : le pilote présent
+     * dans WEB-INF/lib n'est pas toujours découvert automatiquement, ce qui
+     * provoque "No suitable driver found".
+     */
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new ExceptionInInitializerError(
+                    "Pilote PostgreSQL absent du WAR : " + e.getMessage());
+        }
+    }
+
     private Connexion() {
     }
 
