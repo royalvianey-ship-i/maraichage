@@ -1,0 +1,24 @@
+<%-- Menu commun à toutes les pages protégées --%>
+<header class="entete">
+    <div class="marque">Gestion maraîchère</div>
+    <nav class="menu">
+        <a href="${pageContext.request.contextPath}/app/dashboard">Tableau de bord</a>
+        <c:if test="${sessionScope.role eq 'ADMIN'}">
+            <a href="${pageContext.request.contextPath}/app/parcelles">Parcelles</a>
+        </c:if>
+        <a href="${pageContext.request.contextPath}/app/cultures">Cultures</a>
+        <a href="${pageContext.request.contextPath}/app/recoltes">Récoltes</a>
+        <c:if test="${sessionScope.role eq 'ADMIN'}">
+            <a href="${pageContext.request.contextPath}/app/utilisateurs">Utilisateurs</a>
+        </c:if>
+    </nav>
+    <div class="utilisateur">
+        <span>${sessionScope.utilisateur} <em>(${sessionScope.role})</em></span>
+        <a class="lien-sortie" href="${pageContext.request.contextPath}/logout">Déconnexion</a>
+    </div>
+</header>
+
+<c:if test="${not empty sessionScope.erreur}">
+    <div class="alerte conteneur">${sessionScope.erreur}</div>
+    <c:remove var="erreur" scope="session"/>
+</c:if>
