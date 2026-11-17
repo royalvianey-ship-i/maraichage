@@ -61,6 +61,9 @@ public class MaraichageLoginModule implements LoginModule {
             Utilisateur u = new UtilisateurDAO().trouverParLogin(identifiant.trim());
             if (u == null || !u.isActif()
                     || !MotsDePasse.verifier(motDePasse, u.getMotDePasseHash(), u.getSel())) {
+                System.err.println("[JAAS] echec d'authentification pour '" + identifiant
+                        + "' : utilisateurTrouve=" + (u != null)
+                        + " actif=" + (u != null && u.isActif()));
                 throw new FailedLoginException("Identifiant ou mot de passe incorrect.");
             }
             this.login = u.getLogin();
@@ -70,6 +73,7 @@ public class MaraichageLoginModule implements LoginModule {
         } catch (FailedLoginException e) {
             throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new LoginException("Erreur d'accès à la base : " + e.getMessage());
         } finally {
             java.util.Arrays.fill(motDePasse, '\0');
